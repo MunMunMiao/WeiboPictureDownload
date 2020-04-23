@@ -22,6 +22,7 @@ node weibo.js -c XXXXX -u 518178935
 Usage: weibo [options]
 
 Options:
+  -c, --cookie <string>     Weibo SUB
   -u, --uid <number>        Weibo user object id
   -d, --directory <string>  Output directory (default: "./")
   -t, --threads <number>    Download threads (default: 10)
