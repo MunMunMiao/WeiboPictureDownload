@@ -134,7 +134,7 @@ async function getUserData(){
 }
 
 async function getUserWeiboPictures(){
-    let page = 470
+    let page = 1
     let url = []
     let stop = false
 
@@ -169,7 +169,7 @@ async function getUserWeiboPictures(){
                 const pictures = pics.map(item => item.large.url)
 
                 url = [...url, ...pictures]
-                console.log(`Page: ${ page }, Analyze picture: ${ url.length }, result: ${ result.ok }`)
+                console.log(`Page: ${ page }, Analyze picture: ${ url.length }`)
                 await delay(1000)
                 page += 1
             }else {
