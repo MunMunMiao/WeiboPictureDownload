@@ -12,7 +12,7 @@ commander
     .requiredOption('-d, --directory <string>', 'Output directory', './')
     .option('-t, --threads <number>', 'Download threads',10)
     .option('-o, --output-file', 'Output files')
-    .option('-i, --interval', 'Analyze interval', 1200)
+    .option('-i, --interval <number>', 'Analyze interval', 1200)
 
 commander.parse(process.argv)
 
@@ -37,7 +37,7 @@ if (commander.threads){
     thread = Number(commander.threads)
 }
 if (commander.interval){
-    interval = commander.interval
+    interval = Number(commander.interval)
 }
 if (commander.outputFile){
     outputFile = true
