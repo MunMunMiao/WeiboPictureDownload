@@ -12,6 +12,7 @@ commander
     .requiredOption('-d, --directory <string>', 'Output directory', './')
     .option('-t, --threads <number>', 'Download threads',10)
     .option('-o, --output-file', 'Output files')
+    .option('-i, --interval', 'Analyze interval', 800)
 
 commander.parse(process.argv)
 
@@ -55,6 +56,10 @@ function writeUrlFile(items){
     }
 
     fs.writeFileSync(path.join(directory, `weibo-${ weiboUid }.txt`), str)
+}
+
+function delay(time){
+    return new Promise(resolve => setTimeout(() => resolve(), time))
 }
 
 function asyncWrite(path, data) {
@@ -129,7 +134,7 @@ async function getUserData(){
 }
 
 async function getUserWeiboPictures(){
-    let page = 1
+    let page = 470
     let url = []
     let stop = false
 
@@ -147,6 +152,7 @@ async function getUserWeiboPictures(){
             })
 
             const result = http.data
+
             if (result.ok === 1){
                 const miao = result.data.cards.filter(item => item.card_type === 9)
                 let pics = []
@@ -163,8 +169,9 @@ async function getUserWeiboPictures(){
                 const pictures = pics.map(item => item.large.url)
 
                 url = [...url, ...pictures]
+                console.log(`Page: ${ page }, Analyze picture: ${ url.length }, result: ${ result.ok }`)
+                await delay(1000)
                 page += 1
-                console.log(`Analyze picture: ${ url.length }`)
             }else {
                 stop = true
             }

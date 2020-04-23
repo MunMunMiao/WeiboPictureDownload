@@ -27,5 +27,6 @@ Options:
   -d, --directory <string>  Output directory (default: "./")
   -t, --threads <number>    Download threads (default: 10)
   -o, --output-file         Output files
+  -i, --interval <number>   Analyze interval (default: 800)
   -h, --help                output usage information
 ```
