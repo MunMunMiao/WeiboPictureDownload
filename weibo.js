@@ -180,6 +180,8 @@ async function getUserWeiboPictures(){
         }
     }
 
+    url = Array.from(new Set(url))
+
     fs.mkdirSync(directory, { recursive: true })
     writeUrlFile(url)
 
