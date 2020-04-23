@@ -12,7 +12,7 @@ commander
     .requiredOption('-d, --directory <string>', 'Output directory', './')
     .option('-t, --threads <number>', 'Download threads',10)
     .option('-o, --output-file', 'Output files')
-    .option('-i, --interval', 'Analyze interval', 800)
+    .option('-i, --interval', 'Analyze interval', 1200)
 
 commander.parse(process.argv)
 
@@ -22,6 +22,7 @@ const userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/5
 let thread = 5
 let outputFile = false
 let directory = null
+let interval = null
 
 if (commander.uid){
     weiboUid = commander.uid
@@ -35,6 +36,9 @@ if (commander.directory){
 if (commander.threads){
     thread = Number(commander.threads)
 }
+if (commander.interval){
+    interval = commander.interval
+}
 if (commander.outputFile){
     outputFile = true
 }
@@ -45,6 +49,7 @@ console.table({
     token: weiboToken,
     'output directory': directory,
     thread,
+    interval,
     'output files': outputFile
 })
 
@@ -170,7 +175,7 @@ async function getUserWeiboPictures(){
 
                 url = [...url, ...pictures]
                 console.log(`Page: ${ page }, Analyze picture: ${ url.length }`)
-                await delay(1000)
+                await delay(interval)
                 page += 1
             }else {
                 stop = true
