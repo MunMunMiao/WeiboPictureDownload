@@ -1,0 +1,25 @@
+{
+  "name": "weibopicturedownload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "weibo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MunMunMiao/WeiboPictureDownload.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MunMunMiao/WeiboPictureDownload/issues"
+  },
+  "homepage": "https://github.com/MunMunMiao/WeiboPictureDownload#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "commander": "^4.1.1",
+    "progress": "^2.0.3",
+    "rxjs": "^6.5.4"
+  }
+}
