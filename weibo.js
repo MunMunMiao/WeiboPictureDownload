@@ -13,6 +13,7 @@ commander
     .option('-t, --threads <number>', 'Download threads',10)
     .option('-o, --output-file', 'Output files')
     .option('-i, --interval <number>', 'Analyze interval', 1200)
+    .option('-l, --limit <number>', 'Limit the number of query pages')
 
 commander.parse(process.argv)
 
@@ -23,6 +24,7 @@ let thread = 5
 let outputFile = false
 let directory = null
 let interval = null
+let limit = null
 
 if (commander.uid){
     weiboUid = commander.uid
@@ -39,6 +41,9 @@ if (commander.threads){
 if (commander.interval){
     interval = Number(commander.interval)
 }
+if (commander.limit){
+    limit = Number(commander.limit)
+}
 if (commander.outputFile){
     outputFile = true
 }
@@ -50,6 +55,7 @@ console.table({
     'output directory': directory,
     thread,
     interval,
+    limit,
     'output files': outputFile
 })
 
@@ -144,6 +150,10 @@ async function getUserWeiboPictures(){
     let stop = false
 
     while (!stop){
+        if (limit !== null && page > limit){
+            break
+        }
+
         try {
             const http = await axios.get('https://m.weibo.cn/api/container/getIndex', {
                 params: {
@@ -178,10 +188,10 @@ async function getUserWeiboPictures(){
                 await delay(interval)
                 page += 1
             }else {
-                stop = true
+                break
             }
         }catch (err) {
-            throw err
+            break
         }
     }
 
