@@ -181,7 +181,7 @@ async function getUserWeiboPictures(){
                     }
                 }
 
-                const pictures = pics.map(item => item.large.url)
+                const pictures = pics.map(item => item.large.url).filter(i => /\/\/wx(1|2|3|4).sinaimg/ig.test(i))
 
                 url = [...url, ...pictures]
                 console.log(`Page: ${ page }, Analyze picture: ${ url.length }`)

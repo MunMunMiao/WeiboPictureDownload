@@ -19,7 +19,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "commander": "^4.1.1",
-    "progress": "^2.0.3",
-    "rxjs": "^6.5.4"
+    "progress": "^2.0.3"
   }
 }
