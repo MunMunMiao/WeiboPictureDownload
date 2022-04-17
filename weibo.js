@@ -159,7 +159,8 @@ async function getUserWeiboPictures(){
                 params: {
                     count: 20,
                     page,
-                    containerid: `107603${ weiboUid }`
+                    containerid: `107603${ weiboUid }`,
+                    type: 'uid'
                 },
                 headers: {
                     cookie: `SUB=${ weiboToken }`
@@ -173,14 +174,13 @@ async function getUserWeiboPictures(){
                 let pics = []
 
                 for (const item of miao){
-                    if (item.mblog.pics){
+                    if (Array.isArray(item?.mblog?.pics)){
                         pics = [...pics, ...item.mblog.pics]
                     }
-                    if (item.mblog.retweeted_status && item.mblog.retweeted_status.pics){
+                    if (Array.isArray(item?.mblog?.retweeted_status?.pics)){
                         pics = [...pics, ...item.mblog.retweeted_status.pics]
                     }
                 }
-
                 const pictures = pics.map(item => item.large.url).filter(i => /\/\/wx(1|2|3|4).sinaimg/ig.test(i))
 
                 url = [...url, ...pictures]
