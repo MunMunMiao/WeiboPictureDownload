@@ -119,29 +119,29 @@ function download(items) {
 
 async function getUserData() {
 	try {
-		const result = await axios.get('https://m.weibo.cn/api/container/getIndex', {
-			params: {
-				type: 'uid',
-				value: weiboUid
-			},
+		const reqUrl = new URL('https://m.weibo.cn/api/container/getIndex')
+		reqUrl.searchParams.set('type', 'uid')
+		reqUrl.searchParams.set('value', weiboUid)
+		const resp = await fetch(reqUrl, {
 			headers: {
 				cookie: `SUB=${weiboToken}`
 			}
 		})
+		const result = await resp.json()
 
-		if (result.data.ok === 1) {
+		if (result.ok === 1) {
 			console.table({
-				id: result.data.data.userInfo.id,
-				name: result.data.data.userInfo.screen_name,
-				verifiedReason: result.data.data.userInfo.verified_reason || 'Null',
-				description: result.data.data.userInfo.description,
-				weiboCount: result.data.data.userInfo.statuses_count,
-				followCount: result.data.data.userInfo.follow_count,
-				followersCount: result.data.data.userInfo.followers_count,
+				id: result.data.userInfo.id,
+				name: result.data.userInfo.screen_name,
+				verifiedReason: result.data.userInfo.verified_reason || 'Null',
+				description: result.data.userInfo.description,
+				weiboCount: result.data.userInfo.statuses_count,
+				followCount: result.data.userInfo.follow_count,
+				followersCount: result.data.userInfo.followers_count,
 			})
 		} else {
 			console.log(result)
-			throw `Error getting user information`
+			throw 'Error getting user information'
 		}
 	} catch (err) {
 		console.error(err)
@@ -159,19 +159,18 @@ async function getUserWeiboPictures() {
 		}
 
 		try {
-			const http = await axios.get('https://m.weibo.cn/api/container/getIndex', {
-				params: {
-					count: 20,
-					page,
-					containerid: `107603${weiboUid}`,
-					type: 'uid'
-				},
+			const reqUrl = new URL('https://m.weibo.cn/api/container/getIndex')
+			reqUrl.searchParams.set('type', 'uid')
+			reqUrl.searchParams.set('containerid', `107603${weiboUid}`)
+			reqUrl.searchParams.set('page', page)
+			reqUrl.searchParams.set('count', 20)
+			const resp = await fetch(reqUrl, {
+				method: 'GET',
 				headers: {
 					cookie: `SUB=${weiboToken}`
 				}
 			})
-
-			const result = http.data
+			const result = await resp.json()
 
 			if (result.ok === 1) {
 				const miao = result.data.cards.filter(item => item.card_type === 9)
@@ -184,8 +183,24 @@ async function getUserWeiboPictures() {
 					if (Array.isArray(item?.mblog?.retweeted_status?.pics)) {
 						pics = [...pics, ...item.mblog.retweeted_status.pics]
 					}
+
+
+					if (!!item?.mblog?.pics && !Array.isArray(item?.mblog?.pics) && typeof item?.mblog?.pics === "object") {
+						pics = [...pics, ...Object.values(item.mblog.pics)]
+					}
+
+					if (!!item?.mblog?.retweeted_status?.pics && !Array.isArray(item?.mblog?.retweeted_status?.pics) && typeof item?.mblog?.retweeted_status?.pics === "object") {
+						pics = [...pics, ...Object.values(item.mblog.retweeted_status.picss)]
+					}
 				}
-				const pictures = pics.map(item => item.large.url).filter(i => /\/\/wx(1|2|3|4).sinaimg/ig.test(i))
+
+				const pictures = []
+				for (const item of pics){
+					const u = item?.large?.url
+					if (/\/\/wx(1|2|3|4).sinaimg/ig.test(u)){
+						pictures.push(u)
+					}
+				}
 
 				url = [...url, ...pictures]
 				console.log(`Page: ${page}, Analyze picture: ${url.length}`)
@@ -195,6 +210,7 @@ async function getUserWeiboPictures() {
 				break
 			}
 		} catch (err) {
+			console.error(err)
 			break
 		}
 	}
