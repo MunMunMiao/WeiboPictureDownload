@@ -139,7 +139,7 @@ async function getUserWeiboPictures() {
 					}
 
 					if (!!item?.mblog?.retweeted_status?.pics && !Array.isArray(item?.mblog?.retweeted_status?.pics) && typeof item?.mblog?.retweeted_status?.pics === "object") {
-						pics = [...pics, ...Object.values(item.mblog.retweeted_status.picss)]
+						pics = [...pics, ...Object.values(item.mblog.retweeted_status.pics)]
 					}
 				}
 
