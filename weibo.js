@@ -79,7 +79,7 @@ async function getUserData() {
 		})
 		const result = await resp.json()
 
-		if (result.ok === 1) {
+		if (result.ok) {
 			console.table({
 				id: result.data.userInfo.id,
 				name: result.data.userInfo.screen_name,
@@ -113,7 +113,7 @@ async function getUserWeiboPictures() {
 			reqUrl.searchParams.set('type', 'uid')
 			reqUrl.searchParams.set('containerid', `107603${weiboUid}`)
 			reqUrl.searchParams.set('page', page)
-			reqUrl.searchParams.set('count', 20)
+			reqUrl.searchParams.set('count', 80)
 			const resp = await fetch(reqUrl, {
 				method: 'GET',
 				headers: {
@@ -122,7 +122,7 @@ async function getUserWeiboPictures() {
 			})
 			const result = await resp.json()
 
-			if (result.ok === 1) {
+			if (result.ok) {
 				const miao = result.data.cards.filter(item => item.card_type === 9)
 				let pics = []
 
